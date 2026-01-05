@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,12 +14,20 @@
       line-height: 1.8;
       font-size: 12px;
       text-shadow: 0 0 2px #aaa;
+      animation: screenFlicker 6s infinite;
+    }
+
+    @keyframes screenFlicker {
+      0%, 97%, 100% { opacity: 1; }
+      98% { opacity: 0.85; }
+      99% { opacity: 0.65; }
     }
 
     .container {
       max-width: 800px;
       margin: auto;
       white-space: pre-line;
+      position: relative;
     }
 
     h1 {
@@ -28,17 +35,85 @@
       font-size: 16px;
       margin-bottom: 40px;
     }
+
+    .log {
+      margin-bottom: 60px;
+      position: relative;
+      animation: textFlicker 4s infinite;
+    }
+
+    @keyframes textFlicker {
+      0%, 92%, 100% { opacity: 1; }
+      93% { opacity: 0.8; }
+      94% { opacity: 0.4; }
+      95% { opacity: 0.9; }
+    }
+
+    .divider {
+      text-align: center;
+      opacity: 0.4;
+      margin: 40px 0;
+    }
+
+    /* Scanlines */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    /* Random corruption flash */
+    .corrupt {
+      animation: corruptFlash 0.15s steps(2) infinite;
+    }
+
+    @keyframes corruptFlash {
+      0% { text-shadow: 2px 0 red, -2px 0 cyan; }
+      100% { text-shadow: -2px 0 red, 2px 0 cyan; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>TRANSMISSION LOG</h1>
-    <p>
-As I am writing this I am coughing up more dirt, an unfortunate side effect of my current predicament. Bummer. The colors are strange here. The life I used to live was technicolor, this place lacks any saturation. There are other people here, but I only see them in the shadows or scurrying down the streets. Odd. I found an abandoned building near the outskirts of this city, if you can call it that. I’m holed up there for now. Will update soon with more information.
+
+    <div class="log">
+As I am writing this I am coughing up more dirt, an unfortunate side effect of my current predicament. Bummer. The colors are strange here. The life I used to live was technicolor, this place lacks any saturation. There are other people here, but I only see them in the shadows or scurrying down the streets. Odd. I found an abandoned building near the outskirts of this city, if you can call it that. I’m holding up there for now. Will update soon with more information.
 
 Curiously,
 Grimm
-    </p>
+    </div>
+
+    <div class="divider">---</div>
+
+    <div class="log" id="andersen">
+i watcHed her fall. 
+we all fell, just like comets. One moment they loved us, then they cast us aside. cut floWers can’t expect To be Loved forever. we’re left tO the vultures. they’Re in charge here. they’re some demented combination of enforcer, overlord and sociopath. i’d say they’re just doing their jobs but they play with their food too much for me to believe that. most of us don’t last the night, they don’t Kill you, not In the normal sense. the hollow shells that used to be people haunt this place. but i made It. my name is irrelevant. the person i was before is dead and gone. they call me andersen when they call me Anything at all. you can’t trust anyone hEre. You cAn barely trust yourself. survival is your only purpose. no greater meaning. no hope. just your next breath. i’ve kept my head down. stayed out of sight. but i can’t watch even one more of us Lose to the vultures. the Final shred of my humAnity is taking over. this new girL is going to make iT because i’m going to get her. 
+cautiously,
+andersen
+    </div>
   </div>
+
+<script>
+  const target = document.getElementById("andersen");
+
+  setInterval(() => {
+    target.classList.add("corrupt");
+    setTimeout(() => target.classList.remove("corrupt"), 120);
+  }, 3500 + Math.random() * 3000);
+</script>
+
 </body>
 </html>
